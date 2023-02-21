@@ -12,9 +12,29 @@ class Form extends Component {
     };
   }
 
+  handleChange = (event) => {
+    const { name, value } = event.target
+    this.setState({ [name]: value })
+    console.log(this.state)
+  }
+
+  handleSubmit(event) {
+    event.preventDefault()
+    const newResy = {
+      id: Date.now(), 
+      ...this.state
+    }
+    this.props.addResy(newResy)
+    this.clearInputs()
+  }
+
+  clearInputs = () => {
+    this.setState({name: '', date: '', time: '', number: 0})
+  }
+
   render() {
     return (
-      <form>
+      <form className='resy-form'>
         <input
           type="text"
           value={this.state.name}
@@ -43,7 +63,7 @@ class Form extends Component {
           name="number"
           onChange={this.handleChange}
         ></input>
-        <button>Make Reservation</button>
+        <button onClick={(event) => this.handleSubmit(event)} className="reservation-button" >Make Reservation</button>
       </form>
     );
   }
