@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Reservations from '../Reservations/Reservations'
+import Form from '../Form/Form';
 import './App.css';
 
 class App extends Component {
@@ -16,15 +17,16 @@ class App extends Component {
     .then(data => this.setState({reservations: data}))
   }
 
+  addResy = newResy => {
+    this.setState({reservations: [...this.state.reservations, newResy]})
+  }
 
   render() {
     return (
       <main className="App">
         <h1 className='app-title'>Turing Cafe Reservations</h1>
-        <div className='resy-form'>
-
-        </div>
-          <Reservations reservations={this.state.reservations} />
+        <Form addResy={this.addResy} />
+        <Reservations reservations={this.state.reservations} />
       </main>
     )
   }
