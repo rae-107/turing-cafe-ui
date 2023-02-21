@@ -18,15 +18,35 @@ class App extends Component {
   }
 
   addResy = newResy => {
-    this.setState({reservations: [...this.state.reservations, newResy]})
+    fetch('http://localhost:3001/api/v1/reservations', {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newResy)
+    })
+    .then(res => res)
+    .then(data => {
+      if(data.ok) {
+        this.setState({reservations: [...this.state.reservations, newResy]})
+      }
+    })
   }
+
+  deleteResy = id => {
+    fetch(`http://localhost:3001/api/v1/reservations/${id}`, {
+      method: 'DELETE'
+    })
+    this.setState({reservations: this.state.reservations.filter(reso => reso.id !== id)})
+  }
+
 
   render() {
     return (
       <main className="App">
         <h1 className='app-title'>Turing Cafe Reservations</h1>
         <Form addResy={this.addResy} />
-        <Reservations reservations={this.state.reservations} />
+        <Reservations deleteResy={this.deleteResy} reservations={this.state.reservations} />
       </main>
     )
   }
